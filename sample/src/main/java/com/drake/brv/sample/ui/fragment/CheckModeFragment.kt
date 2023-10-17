@@ -4,6 +4,7 @@ import android.view.View
 import com.drake.brv.BindingAdapter
 import com.drake.brv.sample.R
 import com.drake.brv.sample.databinding.FragmentCheckModeBinding
+import com.drake.brv.sample.databinding.ItemCheckModeBinding
 import com.drake.brv.sample.model.CheckModel
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.linear
@@ -16,6 +17,34 @@ class CheckModeFragment : EngineFragment<FragmentCheckModeBinding>(R.layout.frag
     override fun initView() {
         binding.rv.linear().setup {
             addType<CheckModel>(R.layout.item_check_mode)
+
+/*----------------------------------------------------------*/
+//            使用ViewBinDing时, setChecked
+            onBind {
+                val binding =
+                    getBinding<ItemCheckModeBinding>() // 使用ViewBinding/DataBinding都可以使用本方法
+                val model = getModel<CheckModel>()
+                binding.cb.isChecked = model.checked
+                binding.cb.visibility = if (model.visibility) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+            }
+            /*onPayload也没有被回调*/
+/*            onPayload{
+                val binding =
+                    getBinding<ItemCheckModeBinding>() // 使用ViewBinding/DataBinding都可以使用本方法
+                val model = getModel<CheckModel>()
+                binding.cb.isChecked = model.checked
+                binding.cb.visibility = if (model.visibility) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }*/
+
 
             // 长按列表进入编辑模式
             onLongClick(R.id.item) {
